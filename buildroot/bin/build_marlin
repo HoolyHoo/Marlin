@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-#arduino --verify --board sanguino:avr:mega:cpu=atmega1284p Marlin/Marlin.ino
+# delete previous build hex
+find $TMPDIR -name \*.hex -exec rm {} \;
 
+# build source
 /Applications/Arduino.app/Contents/Java/arduino-builder \
     -compile \
     -hardware /Applications/Arduino.app/Contents/Java/hardware \
@@ -17,3 +19,8 @@
     -prefs=runtime.tools.avrdude.path=/Applications/Arduino.app/Contents/Java/hardware/tools/avr \
     -prefs=runtime.tools.avr-gcc.path=/Applications/Arduino.app/Contents/Java/hardware/tools/avr \
     Marlin/Marlin.ino
+
+# copy compiled hex to project root
+find $TMPDIR -name \Marlin.ino.hex -exec cp {} . \;
+
+echo Ready.
