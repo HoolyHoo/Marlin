@@ -96,14 +96,22 @@
   val <<= 1
 
 static void ST7920_SWSPI_SND_8BIT(uint8_t val) {
-  ST7920_SND_BIT; // 1
-  ST7920_SND_BIT; // 2
-  ST7920_SND_BIT; // 3
-  ST7920_SND_BIT; // 4
-  ST7920_SND_BIT; // 5
-  ST7920_SND_BIT; // 6
-  ST7920_SND_BIT; // 7
-  ST7920_SND_BIT; // 8
+  uint8_t i;
+  for (i = 0; i < 8; i++) {
+    WRITE(ST7920_CLK_PIN,0);
+    #if F_CPU == 16000000
+      __asm__("nop\n\t");
+    #endif
+    WRITE(ST7920_DAT_PIN,val&0x80);
+    val<<=1;
+    WRITE(ST7920_CLK_PIN,1);
+    #if F_CPU >= 16000000
+      __asm__("nop\n\t");
+    #endif
+    #if F_CPU >= 20000000
+      __asm__("nop\n\t");
+    #endif
+  }
 }
 
 #define ST7920_CS()              {WRITE(ST7920_CS_PIN,1);u8g_10MicroDelay();}
