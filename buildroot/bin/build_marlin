@@ -1,3 +1,19 @@
 #!/usr/bin/env bash
 
-arduino --verify --board arduino:avr:mega:cpu=atmega2560 Marlin/Marlin.ino
+#arduino --verify --board sanguino:avr:mega:cpu=atmega1284p Marlin/Marlin.ino
+
+/Applications/Arduino.app/Contents/Java/arduino-builder \
+    -compile \
+    -hardware /Applications/Arduino.app/Contents/Java/hardware \
+    -hardware ~/Library/Arduino15/packages \
+    -tools /Applications/Arduino.app/Contents/Java/tools-builder \
+    -tools /Applications/Arduino.app/Contents/Java/hardware/tools/avr \
+    -tools ~/Library/Arduino15/packages \
+    -built-in-libraries /Applications/Arduino.app/Contents/Java/libraries \
+    -libraries ~/Documents/Arduino/libraries \
+    -fqbn=Sanguino:avr:sanguino:cpu=atmega1284p \
+    -warnings=none \
+    -prefs=build.warn_data_percentage=75 \
+    -prefs=runtime.tools.avrdude.path=/Applications/Arduino.app/Contents/Java/hardware/tools/avr \
+    -prefs=runtime.tools.avr-gcc.path=/Applications/Arduino.app/Contents/Java/hardware/tools/avr \
+    Marlin/Marlin.ino
